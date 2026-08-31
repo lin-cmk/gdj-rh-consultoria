@@ -32,7 +32,7 @@ function Home() {
         <video autoPlay muted loop playsInline className="absolute inset-0 w-full h-full object-cover">
           <source src="/videos/gen_3Ieuk3KGUdia6KmztW8eJFyVNIJ.mp4" type="video/mp4" />
         </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-purple-900/70 via-blue-900/40 to-indigo-900/80" />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/70 via-blue-950/40 to-blue-900/80" />
 
         <div className="text-center max-w-4xl relative z-10 px-4">
           <h1 className="text-5xl md:text-7xl font-black mb-6 text-white drop-shadow-2xl">
