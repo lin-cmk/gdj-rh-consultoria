@@ -18,8 +18,14 @@ function App() {
     <div className="w-full bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 min-h-screen text-white">
       
       {/* HERO */}
-      <section className="h-screen flex items-center justify-center px-4">
-        <div className="text-center max-w-4xl">
+      <section className="h-screen flex items-center justify-center px-4 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10">
+          <video autoPlay muted loop className="w-full h-full object-cover">
+            <source src="/videos/hero.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div className="text-center max-w-4xl relative z-10">
+          <img src="/images/logo.jpeg" alt="GDJ Logo" className="h-20 mx-auto mb-6 rounded-full shadow-2xl" />
           <h1 className="text-6xl md:text-7xl font-black mb-8">
             Transforme sua <span className="text-emerald-400">seleção</span>
           </h1>
@@ -102,14 +108,10 @@ function App() {
             </div>
           </div>
 
-          <div className="relative">
-            <div className="w-full h-96 bg-gradient-to-br from-red-500/20 to-rose-500/20 rounded-3xl border-4 border-red-500/30 backdrop-blur-xl flex items-center justify-center p-12">
-              <div className="text-center">
-                <div className="text-6xl mb-6 animate-pulse">💥</div>
-                <h3 className="text-3xl font-black text-white mb-4">Ciclo vicioso</h3>
-                <p className="text-xl text-white/70">80% das contratações internas falham nos primeiros 12 meses</p>
-              </div>
-            </div>
+          <div className="grid grid-cols-2 gap-4">
+            <img src="/images/servicos-1.jpeg" alt="Serviço 1" className="rounded-2xl shadow-2xl hover:scale-105 transition-transform" />
+            <img src="/images/servicos-2.jpeg" alt="Serviço 2" className="rounded-2xl shadow-2xl hover:scale-105 transition-transform" />
+            <img src="/images/servicos-3.jpeg" alt="Serviço 3" className="rounded-2xl shadow-2xl hover:scale-105 transition-transform col-span-2" />
           </div>
         </div>
       </section>
@@ -178,7 +180,7 @@ function App() {
               { nome: 'Pedro Santos', role: 'Founder StartupX', text: 'Minha empresa decolou!', emoji: '🧔' }
             ].map((t, i) => (
               <div key={i} className="p-10 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl hover:bg-white/10 transition-all hover:translate-y-[-10px]">
-                <div className="text-5xl mb-6">{t.emoji}</div>
+                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-emerald-400 to-green-600 flex items-center justify-center text-4xl mx-auto mb-6 shadow-lg">{t.emoji}</div>
                 <p className="text-white/80 text-lg mb-6 italic">"{t.text}"</p>
                 <div>
                   <h4 className="font-bold text-white text-xl">{t.nome}</h4>
