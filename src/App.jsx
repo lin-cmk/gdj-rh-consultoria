@@ -305,8 +305,3 @@ function App() {
 }
 
 export default App
-# confirmar que as imagens estão no repo e não ignoradas
-git ls-files | grep -i images
-
-# checar se .gitignore está bloqueando
-cat .gitignore | grep -i image
