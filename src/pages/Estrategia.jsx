@@ -4,6 +4,8 @@ import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import WhatsAppFloat from '../components/ui/WhatsAppFloat';
 import SectionLeadMagnet from '../components/sections/SectionLeadMagnet';
+import SectionPartners from '../components/sections/SectionPartners';
+import SectionFaq from '../components/sections/SectionFaq';
 import { FaWhatsapp, FaDownload, FaCheckCircle } from 'react-icons/fa';
 
 export default function Estrategia() {
@@ -108,6 +110,8 @@ export default function Estrategia() {
 
       {/* ===== BLOCO 3 — LEAD MAGNET ===== */}
       <SectionLeadMagnet />
+      <SectionPartners />
+      <SectionFaq />
 
       <Footer />
       <WhatsAppFloat />
