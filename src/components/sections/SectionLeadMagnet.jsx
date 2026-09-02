@@ -68,7 +68,7 @@ export default function SectionLeadMagnet() {
           .insert([
             {
               lead_id: leadData.id,
-              qtd_funcionarios: form.qtd_funcionarios ? parseInt(form.qtd_funcionarios) : null,
+              qtd_funcionarios: form.qtd_funcionarios || null,
               observacoes: form.cargos_funcoes || null,
             },
           ]);
@@ -261,11 +261,11 @@ export default function SectionLeadMagnet() {
                     className="w-full px-4 py-3 border border-verde-musgo/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-dourado-metalico bg-branco-gelo/50 appearance-none"
                   >
                     <option value="">Selecione uma faixa</option>
-                    <option value="1">Até 10</option>
-                    <option value="2">11 a 50</option>
-                    <option value="3">51 a 100</option>
-                    <option value="4">101 a 500</option>
-                    <option value="5">Mais de 500</option>
+                    <option value="Até 10">Até 10</option>
+                    <option value="11 a 50">11 a 50</option>
+                    <option value="51 a 100">51 a 100</option>
+                    <option value="101 a 500">101 a 500</option>
+                    <option value="Mais de 500">Mais de 500</option>
                   </select>
                 </div>
 
