@@ -50,7 +50,7 @@ export default function SectionLeadMagnet() {
           {
             nome: form.nome,
             email: form.email,
-            whatsapp: form.whatsapp,
+            telefone: form.whatsapp,
             empresa: form.empresa,
             interesse: form.ebook === 'nr1' ? 'NR1' : 'TERCEIRIZACAO',
             origem: 'site_lead_magnet',
