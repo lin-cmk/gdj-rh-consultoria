@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#061A30;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0A2540;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00D084;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00F5A0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Fundo arredondado -->
+  <rect x="0" y="0" width="200" height="200" rx="40" fill="url(#bgGrad)"/>
+  
+  <!-- Envelope -->
+  <g transform="translate(45, 65)">
+    <rect x="0" y="15" width="110" height="75" rx="10" fill="none" stroke="url(#neonGrad)" stroke-width="5"/>
+    <path d="M 0 25 L 55 60 L 110 25" stroke="url(#neonGrad)" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Círculo com seta (vaga subindo) -->
+  <g transform="translate(100, 70)">
+    <circle cx="0" cy="0" r="22" fill="url(#neonGrad)"/>
+    <path d="M 0 -10 L 0 10 M -7 -3 L 0 -10 L 7 -3" stroke="#0A2540" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Ponto pulsante -->
+  <circle cx="150" cy="65" r="6" fill="#00F5A0">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1.5s" repeatCount="indefinite"/>
+  </circle>
+</svg>
