@@ -187,9 +187,8 @@ export default function Home() {
           <h2 className="text-4xl md:text-5xl font-black mb-4 text-branco-gelo">Nossos Valores</h2>
           <p className="text-xl text-branco-gelo/80">O que guia cada entrega da GDJ Vertex</p>
         </div>
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8">
-          <img src="/images/servicos-2.jpeg" alt="Valores 1" className="rounded-3xl shadow-2xl hover:scale-[1.02] transition-transform" />
-          <img src="/images/servicos-3.jpeg" alt="Valores 2" className="rounded-3xl shadow-2xl hover:scale-[1.02] transition-transform" />
+        <div className="max-w-xl mx-auto">
+          <img src="/images/servicos-3.jpeg" alt="GDJ Soluções Empresariais — conectamos pessoas e impulsionamos resultados" className="block w-full h-auto rounded-3xl shadow-2xl hover:scale-[1.02] transition-transform" />
         </div>
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mt-12">
           {[
