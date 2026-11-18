@@ -5,6 +5,7 @@ import Header from '../components/layout/Header.jsx'
 import Footer from '../components/layout/Footer.jsx'
 import WhatsAppFloat from '../components/ui/WhatsAppFloat.jsx'
 import Button from '../components/ui/Button.jsx'
+import RecruitmentTechnology from '../components/RecruitmentTechnology.jsx'
 
 export default function Home() {
   const [scrolled, setScrolled] = useState(false)
@@ -182,28 +183,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-32 px-4 bg-verde-profundo">
-        <div className="max-w-6xl mx-auto text-center mb-20">
-          <h2 className="text-4xl md:text-5xl font-black mb-4 text-branco-gelo">Nossos Valores</h2>
-          <p className="text-xl text-branco-gelo/80">O que guia cada entrega da GDJ Vertex</p>
-        </div>
-        <div className="max-w-xl mx-auto">
-          <img src="/images/servicos-3.jpeg" alt="GDJ Soluções Empresariais — conectamos pessoas e impulsionamos resultados" className="block w-full h-auto rounded-3xl shadow-2xl hover:scale-[1.02] transition-transform" />
-        </div>
-        <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mt-12">
-          {[
-            { icon: '🗂️', titulo: 'Organização', desc: 'Processos claros e estruturados em cada etapa.' },
-            { icon: '⚡', titulo: 'Agilidade', desc: 'Respostas rápidas sem abrir mão da qualidade.' },
-            { icon: '🤝', titulo: 'Confiança', desc: 'Relação transparente e comprometida com resultado.' },
-          ].map((v, i) => (
-            <div key={i} className="p-8 bg-branco-gelo/5 border border-branco-gelo/10 rounded-3xl hover:bg-branco-gelo/10 transition-all">
-              <div className="text-4xl mb-4">{v.icon}</div>
-              <h3 className="text-xl font-bold text-branco-gelo mb-2">{v.titulo}</h3>
-              <p className="text-branco-gelo/70">{v.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
+      <RecruitmentTechnology />
 
       <section className="py-32 px-4 bg-off-white">
         <div className="max-w-5xl mx-auto text-center">
