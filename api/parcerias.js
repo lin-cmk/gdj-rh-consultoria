@@ -1,3 +1,4 @@
+import { sign } from 'node:crypto'
 import { partnerFields } from '../src/partnerFields.js'
 
 export default async function handler(req, res) {
@@ -30,10 +31,15 @@ export default async function handler(req, res) {
   }
 
   const webhook = process.env.GDJ_PARTNER_WEBHOOK_URL
-  const token = process.env.GDJ_PARTNER_WEBHOOK_TOKEN
-  if (!webhook || !token) return res.status(503).json({ ok: false })
+  const privateKey = process.env.GDJ_PARTNER_WEBHOOK_PRIVATE_KEY
+  if (!webhook || !privateKey) return res.status(503).json({ ok: false })
 
   try {
+    const encode = (value) => Buffer.from(JSON.stringify(value)).toString('base64url')
+    const now = Math.floor(Date.now() / 1000)
+    const claims = encode({ alg: 'RS256', typ: 'JWT' }) + '.' + encode({ iat: now, exp: now + 60 })
+    const signature = sign('RSA-SHA256', Buffer.from(claims), privateKey).toString('base64url')
+    const token = claims + '.' + signature
     const response = await fetch(webhook, {
       method: 'POST',
       redirect: 'error',
