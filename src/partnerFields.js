@@ -217,3 +217,24 @@ export const partnerFields = [
     ]
   }
 ]
+
+const [company, representative, commercial, demand, confirmation] = partnerFields
+
+company.fields.find(field => field.key === 'campo_8').required = true
+representative.fields.filter(field => ['campo_10', 'campo_11'].includes(field.key)).forEach(field => {
+  field.required = true
+})
+representative.title = 'Representante legal e signatário'
+commercial.fields = commercial.fields.filter(field => !['campo_15', 'campo_17'].includes(field.key))
+confirmation.title = 'Confirmação e proposta'
+const demandFields = demand.fields
+demandFields.find(field => field.key === 'campo_22').required = true
+demandFields.find(field => field.key === 'campo_23').required = true
+demandFields.find(field => field.key === 'campo_27').label = 'Requisitos técnicos e comportamentais obrigatórios'
+demandFields.push(
+  { key: 'requisitos_desejaveis', label: 'Requisitos desejáveis', type: 'text' },
+  { key: 'modelo_trabalho', label: 'Modelo de trabalho', options: ['Presencial', 'Híbrido', 'Remoto'] },
+)
+export { demandFields }
+export const maxJobProfiles = 20
+export const proposalConsent = 'Confirmo o envio dos dados para análise e preparação da proposta de parceria. O acordo será formalizado com a assinatura do documento.'
