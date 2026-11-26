@@ -8,7 +8,7 @@
     "build": "vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "test:hml-reservas": "node --test tests/hml-reservas.test.js"
+    "test:hml-reservas": "node tests/hml-reservas.test.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.112.4",
