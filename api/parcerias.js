@@ -1,4 +1,4 @@
-import { sign } from 'node:crypto'
+import { randomUUID } from 'node:crypto'
 import { partnerFields, demandFields, maxJobProfiles, proposalConsent } from '../src/partnerFields.js'
 
 export default async function handler(req, res) {
@@ -18,19 +18,26 @@ export default async function handler(req, res) {
     return res.status(400).json({ ok: false })
   }
 
+  if (body.submissionId !== undefined && (typeof body.submissionId !== 'string'
+    || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(body.submissionId))) {
+    return res.status(400).json({ ok: false })
+  }
+
+  const partner = {}
+  const profiles = body.jobs.map(() => ({}))
   const groups = partnerFields.flatMap(group => group.fields === demandFields
-    ? body.jobs.map((values, index) => ({ ...group, title: `Perfil de vaga ${index + 1}`, values }))
-    : [{ ...group, values: body }])
+    ? body.jobs.map((values, index) => ({ ...group, title: `Perfil de vaga ${index + 1}`, values, normalized: profiles[index] }))
+    : [{ ...group, values: body, normalized: partner }])
 
   if (body.differentSigner === 'on') {
-    groups.splice(2, 0, { title: 'Signatário da proposta', values: body, fields: [
+    groups.splice(2, 0, { title: 'Signatário da proposta', values: body, normalized: partner, fields: [
       { key: 'signerName', label: 'Nome', required: true },
       { key: 'signerEmail', label: 'E-mail', required: true, type: 'email' },
     ] })
   }
 
   const sections = []
-  for (const { title, fields, values } of groups) {
+  for (const { title, fields, values, normalized } of groups) {
     const lines = [title]
     for (const { key, label, required, type, options } of fields) {
       const raw = values[key] ?? ''
@@ -38,37 +45,35 @@ export default async function handler(req, res) {
       const value = raw.trim()
       if ((required && !value) || value.length > (label === 'Observações' ? 1000 : 500)
         || (value && type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
-        || (value && type === 'number' && !/^[1-9]\d*$/.test(value))
+        || (value && type === 'number' && (!/^[1-9]\d*$/.test(value) || !Number.isSafeInteger(Number(value))))
         || (value && options && !options.includes(value))) {
         return res.status(400).json({ ok: false })
       }
+      normalized[key] = value
       lines.push(label + ': ' + (value || 'Não informado'))
     }
     sections.push(lines.join('\n'))
   }
   sections.push('Confirmação registrada: ' + proposalConsent)
 
-  const webhook = process.env.GDJ_PARTNER_WEBHOOK_URL
-  const privateKey = process.env.GDJ_PARTNER_WEBHOOK_PRIVATE_KEY
-  if (!webhook || !privateKey) return res.status(503).json({ ok: false })
+  const submissionId = body.submissionId?.toLowerCase() ?? randomUUID()
+  const supabaseUrl = process.env.GDJ_INTAKE_SUPABASE_URL
+  const serviceKey = process.env.GDJ_INTAKE_SUPABASE_KEY
+  if (!supabaseUrl || !serviceKey) return res.status(503).json({ ok: false })
 
   try {
-    const encode = (value) => Buffer.from(JSON.stringify(value)).toString('base64url')
-    const now = Math.floor(Date.now() / 1000)
-    const claims = encode({ alg: 'RS256', typ: 'JWT' }) + '.' + encode({ iat: now, exp: now + 60 })
-    const signature = sign('RSA-SHA256', Buffer.from(claims), privateKey).toString('base64url')
-    const token = claims + '.' + signature
-    const response = await fetch(webhook, {
+    const response = await fetch(new URL('/rest/v1/rpc/gdj_registrar_ficha', supabaseUrl), {
       method: 'POST',
       redirect: 'error',
-      headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + token },
-      body: JSON.stringify({ text: sections.join('\n\n') }),
-      signal: AbortSignal.timeout(15000),
+      headers: { 'Content-Type': 'application/json', apikey: serviceKey, Authorization: 'Bearer ' + serviceKey },
+      body: JSON.stringify({ p_id: submissionId, p_empresa: partner, p_perfis: profiles, p_texto_email: sections.join('\n\n') }),
+      signal: AbortSignal.timeout(10000),
     })
-    if (!response.ok || (await response.json()).ok !== true) {
+    if (response.status === 409) return res.status(409).json({ ok: false })
+    if (!response.ok || (await response.json()) !== submissionId) {
       return res.status(502).json({ ok: false })
     }
-    return res.status(200).json({ ok: true })
+    return res.status(200).json({ ok: true, submissionId })
   } catch {
     return res.status(502).json({ ok: false })
   }

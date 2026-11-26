@@ -27,6 +27,8 @@ function Fields({ fields, prefix = '' }) {
 export default function Parcerias() {
   const [status, setStatus] = useState('idle')
   const pending = useRef(false)
+  const attempt = useRef(null)
+  const [protocol, setProtocol] = useState(null)
   const [profiles, setProfiles] = useState([0])
   const nextProfile = useRef(1)
   const [differentSigner, setDifferentSigner] = useState(false)
@@ -42,6 +44,11 @@ export default function Parcerias() {
       delete values[fieldName]
       return [key, value]
     })))
+    const snapshot = JSON.stringify(values)
+    if (attempt.current?.snapshot !== snapshot) {
+      attempt.current = { snapshot, id: crypto.randomUUID() }
+    }
+    values.submissionId = attempt.current.id
     setStatus('sending')
     try {
       const response = await fetch('/api/parcerias', {
@@ -49,7 +56,9 @@ export default function Parcerias() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
       })
-      if (!response.ok || !(await response.json()).ok) throw new Error()
+      const result = await response.json()
+      if (!response.ok || !result.ok || !result.submissionId) throw new Error()
+      setProtocol(result.submissionId)
       setStatus('sent')
     } catch {
       setStatus('error')
@@ -76,7 +85,8 @@ export default function Parcerias() {
       <div className="mx-auto max-w-4xl px-5 py-10">
         {status === 'sent' ? (
           <section className="rounded-2xl bg-white p-8" role="status">
-            <h2 className="text-2xl font-bold">Cadastro enviado</h2>
+            <h2 className="text-2xl font-bold">Ficha recebida</h2>
+            <p className="mt-2 break-all text-sm">Protocolo {protocol}</p>
             <p className="mt-2">A equipe da GDJ Vertex recebeu a ficha para analisar os perfis e preparar a proposta de parceria.</p>
           </section>
         ) : (
