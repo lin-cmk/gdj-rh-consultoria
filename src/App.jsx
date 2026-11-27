@@ -7,6 +7,7 @@ import Blog from './pages/Blog.jsx'
 import BlogPost from './pages/BlogPost.jsx'
 import LandingNR1 from './pages/LandingNR1.jsx'
 import Contato from './pages/Contato.jsx'
+import Parcerias from './pages/Parcerias.jsx'
 
 /* ============================================================
  * CHAT DA SANDRA (atendimento + captação) — n8n /webhook/site-chat
@@ -139,6 +140,7 @@ function SandraChat() {
 }
 
 function App() {
+  const isPartnerPage = /^\/parcerias\/?$/i.test(window.location.pathname)
   return (
     <>
       <Routes>
@@ -149,8 +151,9 @@ function App() {
         <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/nr1" element={<LandingNR1 />} />
         <Route path="/contato" element={<Contato />} />
+        <Route path="/parcerias" element={<Parcerias />} />
       </Routes>
-      <SandraChat />
+      {!isPartnerPage && <SandraChat />}
     </>
   )
 }

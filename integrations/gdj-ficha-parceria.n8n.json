@@ -1,0 +1,90 @@
+{
+  "name": "GDJ Vertex — Receber ficha de parceria",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "gdj-ficha-parceria",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "3307487c-dd7f-42d0-9986-41a0138a41d4",
+      "name": "Receber ficha",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "965fe135-4f23-44b8-9d8b-19f53df427d0"
+    },
+    {
+      "parameters": {
+        "fromEmail": "gisele@gdjvertex.com.br",
+        "toEmail": "gisele@gdjvertex.com.br",
+        "subject": "GDJ Vertex | Novo cadastro de parceiro comercial",
+        "emailFormat": "text",
+        "text": "={{ $json.body.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "e9aeef03-d2c9-4de5-aefc-2f496851b275",
+      "name": "Enviar ficha",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "{\"ok\":true}",
+        "options": {}
+      },
+      "id": "f8e52fcf-84ec-4c42-9f33-db5dc10bf437",
+      "name": "Confirmar envio",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Receber ficha": {
+      "main": [
+        [
+          {
+            "node": "Enviar ficha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar ficha": {
+      "main": [
+        [
+          {
+            "node": "Confirmar envio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveDataErrorExecution": "none",
+    "saveDataSuccessExecution": "none",
+    "saveManualExecutions": false,
+    "saveExecutionProgress": false
+  }
+}
